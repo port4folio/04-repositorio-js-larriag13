@@ -60,7 +60,7 @@ btnEditar.addEventListener("click", buscarTareaEditar); //agrega un evento click
 let i = 0; //variable que guardará la posición de la tarea a editar
 function buscarTareaEditar() {
   //función que busca tareas para editar
-  let tarea_buscada = document.getElementById("tarea").value; //captura el valor del input tarea
+  let tarea_buscada = document.getElementById("txtTarea").value; //captura el valor del input tarea
   i = tareas.findIndex((tarea) => tarea == tarea_buscada); //busca la tarea en el arreglo de tareas
   if (i == -1) {
     //si no se encontró la tarea
@@ -77,3 +77,53 @@ function buscarTareaEditar() {
     modalEditar.show(); //muestra el modal
   }
 }
+
+
+let btnGuardar = document.getElementById("btnGuardar"); //captura el botón guardar del modal
+btnGuardar.addEventListener("click", guardarTarea); //agrega un evento click al botón guardar que llama a la función guardarTarea
+function guardarTarea() {
+  //función que guarda la tarea editada
+  let tarea_nueva = document.getElementById("tarea_nueva").value; //captura el valor del input tarea_nueva
+  modalEditar.hide(); //oculta el modal
+  tareas[i] = tarea_nueva; //asigna la tarea nueva en la posición i
+  listarTareas(tareas); //llama a la función listarTareas para mostrar las tareas en el ul
+}
+
+
+let modalEliminar = new bootstrap.Modal(
+  document.getElementById("modalEliminar")
+); //crea un modal de bootstrap a partir del id modalEliminar del html
+let btnEliminar = document.getElementById("btnEliminar");
+btnEliminar.addEventListener("click", eliminarTarea);
+function eliminarTarea() {
+  //función que busca la tarea para eliminar
+  let tarea_buscada = document.getElementById("txtTarea").value; //captura el valor del input tarea
+  i = tareas.findIndex((tarea) => tarea == tarea_buscada); //busca la tarea en el arreglo de tareas
+  if (i == -1) {
+    //si no se encontró la tarea
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "No se encontro tarea para eliminar, ingrese una existente!",
+      footer: "",
+    });
+  } else {
+    //si se encontró la tarea
+    let tituloModal = document.getElementById("modalEliminarLabel"); //captura el título del modal
+    tituloModal.textContent = "Eliminando " + tareas[i]; //le asigna el texto del título
+    modalEliminar.show(); //muestra el modal
+  }
+}
+
+
+
+
+let btnDelete = document.getElementById("btnDelete"); //captura el botón eliminar del modal
+btnDelete.addEventListener("click", deleteTarea); //agrega un evento click al botón eliminar que llama a la función eliminarTarea
+function deleteTarea() {
+  //función que elimina la tarea
+  modalEliminar.hide(); //oculta el modal
+  tareas=tareas.filter(t=>t!=tareas[i]); //asigna la tarea nueva en la posición i
+  listarTareas(tareas); //llama a la función listarTareas para mostrar las tareas en el ul
+}
+
